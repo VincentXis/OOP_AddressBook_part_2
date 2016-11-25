@@ -1,7 +1,7 @@
 package contactRegister;
 
-import listFileHandler.ListFileHandler;
 import contactObject.Contact;
+import listFileHandler.ListFileHandler;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -22,7 +22,7 @@ public class Register {
      * XFN-3: Sort contacts in alphabetical order
      */
     private List<Contact> sortByFirstName() {
-        List<Contact> sortedContactList = contactList;
+        List<Contact> sortedContactList = new ArrayList<>(contactList);
         sortedContactList.sort(Comparator.comparing(contact -> contact.getFirstName().toLowerCase()));
         return sortedContactList;
     }
