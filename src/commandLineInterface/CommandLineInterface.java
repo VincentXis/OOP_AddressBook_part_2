@@ -2,17 +2,18 @@ package commandLineInterface;
 
 
 import contactRegister.Register;
-import listFileHandler.AutoSave;
 
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CommandLineInterface {
     // Instance of Register
     private Register reg = new Register();
     // runCLI() will run while run equals true
     private boolean run = true;
-    AutoSave autoSave = new AutoSave(reg);
-
+    // Logger
+    private static final Logger log = Logger.getLogger(CommandLineInterface.class.getName());
     /**
      * The constructor calls runCLI when instantiated
      */
@@ -21,7 +22,22 @@ public class CommandLineInterface {
     }
 
     private void runCLI() {
+        log.info("runCli started");
+        new Thread(() -> {
+            log.info("Auto save thread started.");
+            while (run){
+                try {
+                    Thread.sleep(5_000);
+                    reg.saveContactList();
+
+                } catch (InterruptedException e) {
+                    log.log(Level.SEVERE, "Sleep failed",e);
+                }
+            }
+            log.info("Auto save thread ended.");
+        }).start();
         System.out.println("Welcome");
+
         String input;
         String[] inputSplit;
         while (run) {
@@ -31,6 +47,7 @@ public class CommandLineInterface {
         }
         reg.saveContactList();
         System.out.println("Good bye");
+        log.info("runCli finished running.");
     }
 
     private void readInputCommand(String[] inputArray) {
@@ -63,24 +80,19 @@ public class CommandLineInterface {
                     break;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, "User input did not meet the requirement to preform an operation");
         }
     }
 
     private void commandOptionList() {
-        System.out.format("%s\n%s\n%s\n%s\n%s\n%s\n%s\n",
-                "Listing all available input commands:",
-                "Add:    add a new contact to list",
-                "Delete: remove a contact from list",
-                "List:   show all contacts in list",
-                "Search: find contact/s in list ",
-                "Quit:   exit the application",
-                "Help:   to get here, lists all available commands");
+        System.out.format("%s\n%s\n%s\n%s\n%s\n%s\n%s\n", "Listing all available input commands:", "Add:    add a new contact to list",
+                "Delete: remove a contact from list", "List:   show all contacts in list", "Search: find contact/s in list ",
+                "Quit:   exit the application", "Help:   to get here, lists all available commands");
     }
 
 
     private boolean flipSwitch() {
-        System.out.println("Shutting down application, terminating all active processes.");
+        System.out.println("Shutting down application, finishing all active threads processes.");
         return run = !run;
     }
 
