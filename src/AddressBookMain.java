@@ -9,6 +9,13 @@ public class AddressBookMain {
         loggerSetup();
         new CommandLineInterface();
     }
+
+    /**
+     * I decided to keep the logging.properties file in src, since im only sending the src folder.
+     * And my file is slightly different from the one provided initially.
+     * the log file does not write anything to the console, and does not overwrite the file each time its run.
+     *
+     */
     private static void loggerSetup() {
         String loggingFilePath = "src/logging.properties";
         try (FileInputStream is = new FileInputStream(loggingFilePath)) {
