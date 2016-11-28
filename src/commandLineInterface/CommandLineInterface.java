@@ -18,27 +18,23 @@ public class CommandLineInterface {
         runCLI();
     }
 
-    /**
-     * FN-10: AutoSave Thread
-     */
-    private Thread autoSaveThread = new Thread(() -> {
-        log.info("Auto save thread started.");
-        while (run) {
-            try {
-                Thread.sleep(5_000);
-                reg.saveContactList();
-            } catch (Exception e) {
-                log.log(Level.SEVERE, "An error occurred in the AutoSave Thread: ", e);
-            }
-        }
-        log.info("Auto save thread ended.");
-        System.out.println("Thank you and good bye.");
-    });
-
     private void runCLI() {
         log.info("runCli started");
         System.out.println("Welcome");
-        autoSaveThread.start();
+
+        new Thread(() -> {
+            log.info("Auto save thread started.");
+            while (run) {
+                try {
+                    Thread.sleep(5_000);
+                    reg.saveContactList();
+                } catch (Exception e) {
+                    log.log(Level.SEVERE, "An error occurred in the AutoSave Thread: ", e);
+                }
+            }
+            log.info("Auto save thread ended.");
+            System.out.println("the last processes has finished running,\nready for the main process to finish.\nGood bye.");
+        }).start();
 
         String input;
         String[] inputSplit;
