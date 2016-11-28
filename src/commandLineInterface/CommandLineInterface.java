@@ -35,9 +35,6 @@ public class CommandLineInterface {
         System.out.println("Thank you and good bye.");
     });
 
-    /**
-     * The while inside the while prevents add, search and delete from receiving the wrong input parameters.
-     */
     private void runCLI() {
         log.info("runCli started");
         System.out.println("Welcome");
@@ -48,27 +45,9 @@ public class CommandLineInterface {
         while (run) {
             input = readUserInput();
             inputSplit = input.split(" ");
-
-            while ((inputSplit[0].toLowerCase().equals("add") && inputSplit.length < 4) || ((inputSplit[0].toLowerCase().equals("search") || inputSplit[0].toLowerCase().equals("delete")) && inputSplit.length < 2)) {
-
-                if (inputSplit[0].toLowerCase().equals("add")) {
-                    System.out.println("To add a new contact you need to enter a the first and last name of\nthe person plus their e-mail address");
-                    log.info("User failed to enter the correct input parameters to add a new contact");
-                } else if (inputSplit[0].toLowerCase().equals("search")) {
-                    System.out.println("To search for a contact in the list type: Search plus the first letters\nof the contacts first or last name");
-                    log.info("User failed to enter the correct input parameters for a search");
-                } else {
-                    System.out.println("To delete a contact from your saved contacts enter the full ID of that contact");
-                    log.info("User failed to enter the correct input parameters to delete a contact");
-                }
-                input = readUserInput();
-                inputSplit = input.split(" ");
-            }
-
             readInputCommand(inputSplit);
         }
         reg.saveContactList();
-
         log.info("runCli finished running.");
     }
 
@@ -79,15 +58,30 @@ public class CommandLineInterface {
         try {
             switch (inputArray[0].toLowerCase()) {
                 case "add":
+                    if (inputArray.length < 4){
+                        System.out.println("To add a new contact you need to enter a the first and last name of\nthe person plus their e-mail address");
+                        log.info("User failed to enter the correct input parameters to add a new contact");
+                        break;
+                    }
                     reg.addContactToList(inputArray);
                     break;
                 case "list":
                     reg.printContactList();
                     break;
                 case "search":
+                    if (inputArray.length < 2){
+                        System.out.println("To search for a contact in the list type: Search plus the first letters\nof the contacts first or last name");
+                        log.info("User failed to enter the correct input parameters for a search");
+                        break;
+                    }
                     reg.searchContact(inputArray[1]);
                     break;
                 case "delete":
+                    if (inputArray.length < 2){
+                        System.out.println("To delete a contact from your saved contacts enter the full ID of that contact");
+                        log.info("User failed to enter the correct input parameters to delete a contact");
+                        break;
+                    }
                     reg.deleteContactFromList(inputArray[1]);
                     break;
                 case "help":
