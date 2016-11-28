@@ -52,17 +52,18 @@ public class Register {
      * log depends on result.
      */
     public void searchContact(String query) {
-        List<Contact> tmpList = new ArrayList<>();
-        sortByFirstName().stream().filter(contact -> contact.getFirstName().toLowerCase().startsWith(query) || contact.getLastName().toLowerCase().startsWith(query)
-        ).forEach(tmpList::add);
-        System.out.println(tmpList.size() + " contact/s matched your search");
-        if (!tmpList.isEmpty()) {
-            tmpList.forEach(System.out::println);
+        int count = sortByFirstName().stream().filter(contact ->
+                contact.getFirstName().toLowerCase().startsWith(query) || contact.getLastName().toLowerCase().startsWith(query))
+                .mapToInt(contact -> (1)).sum();
+        System.out.println(count + " contact/s matched your search");
+        if (count > 0){
+            sortByFirstName().stream().filter(contact ->
+                    contact.getFirstName().toLowerCase().startsWith(query) || contact.getLastName().toLowerCase().startsWith(query))
+                    .forEach(System.out::println);
             log.info("user found matching contact/s with the input query");
-        } else{
+        } else {
             log.info("user found no matching contact/s with the input query ");
         }
-        tmpList = null;
     }
 
     /**

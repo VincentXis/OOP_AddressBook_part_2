@@ -52,7 +52,7 @@ public class CommandLineInterface {
             inputArray[0] = "quit"; // Temporary exit commands
         }
         try {
-            switch (inputArray[0].toLowerCase()) {
+            switch (inputArray[0]) {
                 case "add":
                     if (inputArray.length < 4){
                         System.out.println("To add a new contact you need to enter a the first and last name of\nthe person plus their e-mail address");
@@ -98,9 +98,10 @@ public class CommandLineInterface {
     }
 
     private void commandOptionList() {
-        System.out.format("%s\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n", "Listing all available input commands:",
-                "Add:    add a new contact to list", "List:   show all contacts in list", "Delete: remove a contact from list",
-                "Search: find contact/s in list ", "Help:   to get here, lists all available commands", "Quit:   exit the application"
+        System.out.format("%s\n%s\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n\t%s\n",
+                "The input for a command has to be lowercase to register","List of all available commands:",
+                "add:    add a new contact to list", "list:   show all contacts in list", "delete: remove a contact from list",
+                "search: find contact/s in list ", "help:   to get here, lists all available commands", "quit:   exit the application"
         );
         log.info("User requested to see a list of available commands");
     }
