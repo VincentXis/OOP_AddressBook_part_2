@@ -27,15 +27,17 @@ public class CommandLineInterface {
             try {
                 Thread.sleep(5_000);
                 reg.saveContactList();
-
             } catch (Exception e) {
                 log.log(Level.SEVERE, "An error occurred in the AutoSave Thread: ", e);
             }
         }
         log.info("Auto save thread ended.");
-        System.out.println("Good bye");
+        System.out.println("Thank you and good bye.");
     });
 
+    /**
+     * The while inside the while prevents add, search and delete from receiving the wrong input parameters.
+     */
     private void runCLI() {
         log.info("runCli started");
         System.out.println("Welcome");
@@ -115,7 +117,7 @@ public class CommandLineInterface {
 
 
     private boolean flipSwitch() {
-        System.out.println("Shutting down application, finishing all active processes.");
+        System.out.println("Shutting down application, this may take a few seconds\nwaiting for active processes to finish:");
         log.info("User requested to exit the application, the run boolean will now be inverted");
         return run = !run;
     }
